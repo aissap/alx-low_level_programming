@@ -1,4 +1,6 @@
 #include "main.h"
+#include <stddef.h>
+
 
 /**
 * binary_to_unit - convert a binary number to an unsigned int
@@ -10,18 +12,24 @@
 
 unsigned int binary_to_unit(const char *b)
 {
-	unsigned int number = 0;
+	unsigned int num = 0;
+	int i;
 
-	if (!b)
+	if (b == NULL)
 		return (0);
-	while (*b)
+
+	/* Traverse the charachters in the given string*/
+
+	for (i = 0; b[i] != '\0'; i++)
 	{
-		if (*b != '0' && *b != '1')
+		/* verify if characters are not valid binary digits*/
+
+		if (b[i] != '0' && b[i] != '1')
 			return (0);
 
 		/* Calculate the result */
-		
-		number  = number * 2 + (*b++ - '0');
+
+		num  = num * 2 + (b[i] - '0');
 	}
-	return (number);
+	return (num);
 }
