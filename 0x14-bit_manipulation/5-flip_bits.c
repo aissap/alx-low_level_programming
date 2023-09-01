@@ -2,14 +2,14 @@
 
 /**
  * flip_bits - Count the number of different bits between two numbers.
- * @first_num: The first number.
- * @second_num: The second number.
+ * @fst_num: The first number.
+ * @sec_num: The second number.
  *
  * Return: The number of bits that differ between the two numbers.
  */
-unsigned int flip_bits(unsigned long int first_num, unsigned long int second_num)
+unsigned int flip_bits(unsigned long int fst_num, unsigned long int sec_num)
 {
-	unsigned long int differing_bits = first_num ^ second_num;
+	unsigned long int differing_bits = fst_num ^ sec_num;
 	int bit_count = 0;
 
 	while (differing_bits > 0)
