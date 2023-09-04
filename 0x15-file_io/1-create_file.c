@@ -18,7 +18,7 @@ int create_file(const char *filename, char *content)
 
 	if (content != NULL)
 	{
-	for (lenght - 0; content[lenght];)
+	for (lenght = 0; content[lenght];)
 		lenght++;
 	}
 
