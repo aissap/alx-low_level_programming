@@ -17,15 +17,16 @@ ssize_t read_textfile(const char *filename, size_t max_chars)
 
 	file_descriptor = open(filename, O_RDONLY);
 	if (file_descriptor == -1)
-		return (0;)
-	
+
+		return (0);
+
 	buffer = malloc(sizeof(char) * max_chars);
 	if (buffer == NULL)
 	{
 	close(file_descriptor);
 	return (0);
 	}
-	
+
 	bytes_read = read(file_descriptor, buffer, max_chars);
 	bytes_written = write(STDOUT_FILENO, buffer, bytes_read);
 
