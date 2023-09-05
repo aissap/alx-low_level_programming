@@ -6,9 +6,11 @@ char *allocate_buffer(size_t size);
 void safely_close_fd(int fd);
 
 /**
- *allocate_buffer:  Allocates memory for a buffer.
- *@size: The size of the buffer to allocate.
- *Return: A pointer to the newly-allocated buffer.
+ * allocate_buffer - Allocates memory for a buffer.
+ *
+ * @size: The size of the buffer to allocate.
+ *
+ * Return: A pointer to the newly-allocated buffer.
  */
 char *allocate_buffer(size_t size)
 {
@@ -24,8 +26,9 @@ char *allocate_buffer(size_t size)
 }
 
 /**
- * safely_close_fd - closes a file descriptor and checks for errors.
- * @fd: the file descriptor to close.
+ * safely_close_fd - Closes a file descriptor and checks for errors.
+ *
+ * @fd: The file descriptor to close.
  */
 
 void safely_close_fd(int fd)
@@ -38,8 +41,8 @@ void safely_close_fd(int fd)
 }
 /**
  * main - Copies the contents of one file to another file.
- * @argc: The number of command-line arguments.
  *
+ * @argc: The number of command-line arguments.
  * @argv: An array of strings containing the command-line arguments.
  *
  * Return: 0 on success, or an exit code on failure.
