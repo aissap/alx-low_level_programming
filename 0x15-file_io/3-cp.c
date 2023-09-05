@@ -58,19 +58,25 @@ int main(int argc, char *argv[])
 	if (argc != 3)
 	{
 		fprintf(stderr, "usage: %s file_from file_to\n", argv[0]);
-		exit(EXIT_FAILURE);
+		exit(97);
 	}
 
 	buffer = allocate_buffer(buffer_size);
 	source_fd = open(argv[1], O_RDONLY);
-	dest_fd = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 
-	if (source_fd == -1 || dest_fd == -1)
+
+	if (source_fd == -1)
 	{
-		fprintf(stderr, "error: unable to open files\n");
+		fprintf(stderr, "error: unable to open files\n", argv[1]);
 		free(buffer);
-		exit(EXIT_FAILURE);
+		exit(98);
 	}
+	dest_fd = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	if (dest_fd == -1)
+	{
+		fprintf(stderr, "error: unable to open files\n", argv[2]);
+		free(buffer);
+		exit(99);
 
 	do	{
 		bytes_read = read(source_fd, buffer, buffer_size);
@@ -79,7 +85,7 @@ int main(int argc, char *argv[])
 		{
 			fprintf(stderr, "error: unable to read from filrs %s\n", argv[1]);
 			free(buffer);
-			exit(EXIT_FAILURE);
+			exit(98);
 		}
 
 		bytes_written = write(dest_fd, buffer, bytes_read);
@@ -88,7 +94,7 @@ int main(int argc, char *argv[])
 		{
 			fprintf(stderr, "error: unable to write to file %s\n", argv[2]);
 			free(buffer);
-			exit(EXIT_FAILURE);
+			exi(99);
 		}
 
 	} while (bytes_read > 0);
