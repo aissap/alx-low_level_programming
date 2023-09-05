@@ -5,10 +5,10 @@
 #include <string.h>
 
 /**
- * append_to_existing_file - Appends text at the end of an existing file.
+ *append_text_to_file - Appends text at the end of an existing file.
  *
- * @filename: The name of the file to append to.
- * @text_content: The string to append at the end of the file.
+ *@filename: The name of the file to append to.
+ *@text_content: The string to append at the end of the file.
  *
  * Return: 1 on success, -1 on failure.
  *-1 if the file does not exist or if write permissions are insufficient.
