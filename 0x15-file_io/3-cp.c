@@ -6,8 +6,8 @@ char *allocate_memory_buffer(void);
 void close_descriptor(int fd);
 
 /**
- * allocate_memory_buffer - Allocates a buffer of 1024 bytes.
- * @filename: The name of the file where the buffer is used.
+ * allocate_memory_buffer - Allocates a buffer of.
+ *
  * Return: A pointer to the newly-allocated buffer.
  */
 char *allocate_memory_buffer(void)
@@ -17,7 +17,7 @@ char *allocate_memory_buffer(void)
 	if (buffer == NULL)
 	{
 		dprintf(STDERR_FILENO, "Error: Unable to allocate memory\n");
-		exit(99);
+		exit(EXIT_FAILURE);
 	}
 
 	return (buffer);
