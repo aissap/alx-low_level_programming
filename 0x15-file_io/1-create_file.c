@@ -15,7 +15,7 @@
 
 int create_file(const char *filename, char *content)
 {
-	int file_description, write_result, lenght = 0;
+	int file_descriptor, write_result, lenght = 0;
 
 	if (filename == NULL)
 		return (-1);
@@ -29,7 +29,7 @@ int create_file(const char *filename, char *content)
 	file_descriptor = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
 	write_result = write(file_descriptor, content, lenght);
 
-	if (file_e_descriptor == -1 || write_result == -1)
+	if (file_descriptor == -1 || write_result == -1)
 
 		return (-1);
 	close(file_descriptor);
