@@ -2,106 +2,94 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char *allocate_buffer(size_t size);
-void safely_close_fd(int fd);
+char *allocate_memory_buffer(void);
+void close_descriptor(int fd);
 
 /**
- * allocate_buffer - Allocates memory for a buffer.
- *
- * @size: The size of the buffer to allocate.
- *
+ * allocate_memory_buffer - Allocates a buffer of 1024 bytes.
+ * @filename: The name of the file where the buffer is used.
  * Return: A pointer to the newly-allocated buffer.
  */
-char *allocate_buffer(size_t size)
+char *allocate_memory_buffer(void)
 {
-	char *buffer = malloc(size);
+	char *buffer = malloc(sizeof(char) * 1024);
 
 	if (buffer == NULL)
 	{
-		fprintf(stderr, "error: Unable to allocate memory\n");
-		exit(EXIT_FAILURE);
+		dprintf(STDERR_FILENO, "Error: Unable to allocate memory\n");
+		exit(99);
 	}
 
 	return (buffer);
 }
 
 /**
- * safely_close_fd - Closes a file descriptor and checks for errors.
- *
- * @fd: The file descriptor to close.
+ * close_descriptor - Closes file descriptors.
+ * @fd: The file descriptor to be closed.
  */
 
-void safely_close_fd(int fd)
+void close_descriptor(int fd)
+
 {
+
 	if (close(fd) == -1)
 	{
-		fprintf(stderr, "error: unable to close file descriptor %d\n", fd);
-		exit(EXIT_FAILURE);
+		dprintf(STDERR_FILENO, "Error: Unable to close file descriptor %d\n", fd);
+		exit(100);
 	}
 }
+
 /**
  * main - Copies the contents of one file to another file.
- *
- * @argc: The number of command-line arguments.
- * @argv: An array of strings containing the command-line arguments.
+ * @argc: The number of arguments supplied to the program.
+ * @argv: An array of pointers to the arguments.
  *
  * Return: 0 on success, or an exit code on failure.
  */
 
 int main(int argc, char *argv[])
 {
-	int source_fd, dest_fd;
-	ssize_t bytes_read, bytes_written;
+	int source_fd, destination_fd, bytes_read, bytes_written;
 	char *buffer;
-	size_t buffer_size = 1024;
+
 
 	if (argc != 3)
 	{
-		fprintf(stderr, "usage: %s file_from file_to\n", argv[0]);
+		dprintf(STDERR_FILENO, "Usage: file_from file_to\n");
 		exit(97);
 	}
 
-	buffer = allocate_buffer(buffer_size);
+	buffer = allocate_memory_buffer();
 	source_fd = open(argv[1], O_RDONLY);
+	bytes_read = read(source_fd, buffer, 1024);
+	destination_fd = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 
+	do
 
-	if (source_fd == -1)
 	{
-		fprintf(stderr, "error: unable to open files\n", argv[1]);
-		free(buffer);
-		exit(98);
-	}
-	dest_fd = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	if (dest_fd == -1)
-	{
-		fprintf(stderr, "error: unable to open files\n", argv[2]);
-		free(buffer);
-		exit(99);
-
-	do	{
-		bytes_read = read(source_fd, buffer, buffer_size);
-
-		if (bytes_read == -1)
+		if (source_fd == -1 || bytes_read == -1)
 		{
-			fprintf(stderr, "error: unable to read from filrs %s\n", argv[1]);
+			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 			free(buffer);
 			exit(98);
 		}
 
-		bytes_written = write(dest_fd, buffer, bytes_read);
+		bytes_written = write(destination_fd, buffer, bytes_read);
 
-		if (bytes_written == -1)
+		if (destination_fd == -1 || bytes_written == -1)
 		{
-			fprintf(stderr, "error: unable to write to file %s\n", argv[2]);
+			dprintf(STDERR_FILENO, "Error: Can't write to file %s\n", argv[2]);
 			free(buffer);
-			exi(99);
+			exit(99);
 		}
+		bytes_read = read(source_fd, buffer, 1024);
+		destination_fd = open(argv[2], O_WRONLY | O_APPEND);
 
 	} while (bytes_read > 0);
 
-		free(buffer);
-		safely_close_fd(source_fd);
-		safely_close_fd(dest_fd);
+	free(buffer);
+	close_descriptor(source_fd);
+	close_descriptor(destination_fd);
 
 	return (0);
 }
