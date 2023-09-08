@@ -59,7 +59,7 @@ void close_descriptor(int fd)
  */
 int main(int argc, char *argv[])
 {
-	int source_fd, destination_fd, bytes_read, bytes_written;
+	int source_fd, destination_fd, bytes_read;
 	char *buffer;
 
 	if (argc != 3)
@@ -80,11 +80,6 @@ int main(int argc, char *argv[])
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		free(buffer);
 		exit(98);
-		}
-
-		bytes_written = write(destination_fd, buffer, bytes_read);
-		if (destination_fd == -1 || bytes_read == -1)
-		{
 			dprintf(STDERR_FILENO, "Error : ccan't write to %s\n", argv[2]);
 			free(buffer);
 			exit(99);
