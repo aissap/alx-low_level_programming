@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 /**
  * errorHandling - Handles errors related to file operations.
  * @from: the source file descriptor.
@@ -30,7 +29,6 @@ void errorHandling(int from, int to, char *argv[])
  * @argv: the argument vector.
  * Return: Always 0 (Success).
  */
-
 int main(int argc, char *argv[])
 {
 	int source_fd, dest_fd, close_result;
