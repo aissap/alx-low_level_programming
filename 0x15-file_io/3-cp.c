@@ -50,13 +50,14 @@ int main(int argc, char *argv[])
 	while ((num_chars = read(source_fd, buffer, 1024)) > 0)
 	{
 		if (num_chars == -1)
-
-		errorHandling(-1, 0, argv);
+			errorHandling(-1, 0, argv);
 
 		num_written = write(dest_fd, buffer, num_chars);
 		if (num_written == -1)
 			errorHandling(0, -1, argv);
+	}
 	close_result = close(source_fd);
+
 	if (close_result == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", source_fd);
@@ -70,5 +71,6 @@ int main(int argc, char *argv[])
 	dprintf(STDERR_FILENO, "Error:Cant close fd %d\n", dest_fd);
 	exit(100);
 	}
+
 	return (0);
-	}
+}
