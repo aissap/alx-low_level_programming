@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	while ((num_chars = read(source_fd, buffer, 1024)) > 0)
 	{
 		if (num_chars == -1)
-			errorHandling(-1, 0, argv);
+			errorHandling(source_fd, 0, argv);
 
 		num_written = write(dest_fd, buffer, num_chars);
 		if (num_written == -1)
