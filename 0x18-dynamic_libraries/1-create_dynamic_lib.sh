@@ -1,4 +1,3 @@
-#!/bin/bash
-gcc -wall -wextra -werror -pedantic -c -fPIC *.c
+#!/bin/basih
+gcc -fPIC *.c
 gcc -shared -o liballa.so *.o
-export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
