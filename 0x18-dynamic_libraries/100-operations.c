@@ -1,4 +1,5 @@
 #include "aissa.h"
+#include <stdio.h>
 
 int add(int a, int b)
 {
