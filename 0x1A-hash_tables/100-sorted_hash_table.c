@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "hash_tables.h"
-
 /**
  * shash_table_create - Creates a sorted hash table.
  * @size: The size of new sorted hash table.
@@ -49,78 +46,57 @@ shash_table_t *shash_table_create(unsigned long int size)
  */
 int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 {
-	shash_node_t *new, *temp;
-	char *value_copy;
-	unsigned long int index;
-
-	if (ht == NULL || key == NULL || *key == '\0' || value == NULL)
+	if (!ht || !key || !*key || !value)
 		return (0);
 
-	value_copy = strdup(value);
-	if (value_copy == NULL)
-		return (0);
+	unsigned long int index = key_index((const unsigned char *)key, ht->size);
+	shash_node_t *temp = ht->shead;
 
-	index = key_index((const unsigned char *)key, ht->size);
-	temp = ht->shead;
-	while (temp)
-	{
-		if (strcmp(temp->key, key) == 0)
-		{
-			free(temp->value);
-			temp->value = value_copy;
-			return (1);
-		}
+	while (tmp && strcmp(temp->key, key))
 		temp = temp->snext;
-	}
 
-	new = malloc(sizeof(shash_node_t));
-
-	if (new == NULL)
-	{
-		free(value_copy);
+	char *value_copy = strdup(value);
+	if (!value_copy)
 		return (0);
-	}
-	new->key = strdup(key);
-	if (new->key == NULL)
-	{
-		free(value_copy);
-		free(new);
-		return (0);
-	}
-	new->value = value_copy;
-	new->next = ht->array[index];
-	ht->array[index] = new;
 
-	if (ht->shead == NULL)
+	if (temp)
 	{
-		new->sprev = NULL;
-		new->snext = NULL;
-		ht->shead = new;
-		ht->stail = new;
-	}
-	else if (strcmp(ht->shead->key, key) > 0)
-	{
-		new->sprev = NULL;
-		new->snext = ht->shead;
-		ht->shead->sprev = new;
-		ht->shead = new;
+		free(temp->value);
+		temp->value = value_copy;
 	}
 	else
 	{
-		temp = ht->shead;
-		while (temp->snext != NULL && strcmp(temp->snext->key, key) < 0)
-			temp = temp->snext;
-		new->sprev = temp;
-		new->snext = temp->snext;
-		if (temp->snext == NULL)
-			ht->stail = new;
-		else
-			temp->snext->sprev = new;
-		temp->snext = new;
+		temp = malloc(sizeof(shash_node_t));
+		if (!temp)
+		{
+			free(value_copy);
+			return (0);
+		}
+
+		temp->key = strdup(key);
+		if (!temp->key)
+		{
+			free(value_copy);
+			free(temp);
+			return (0);
+		}
+
+		temp->value = value_copy;
+		temp->next = ht->array[index];
+		ht->array[index] = temp;
+
+		temp->sprev = NULL;
+		temp->snext = ht->shead;
+
+		if (ht->shead)
+			ht->shead->sprev = temp;
+
+		ht->shead = temp;
 	}
 
 	return (1);
 }
+
 
 /**
  * shash_table_get - Retrieve the value associated with
